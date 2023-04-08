@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Percent__c</fullName>
+    <description>El porcentaje de avance de módulos se tiene que calcular automáticamente, basado en la cantidad de unidades completadas.</description>
+    <externalId>false</externalId>
+    <formula>(( Unit_User_history_complete__c  / Module__r.Cant_Units__c  ) * 1 )</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Percent</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Percent</type>
+</CustomField>
