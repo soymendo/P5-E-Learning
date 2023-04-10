@@ -152,7 +152,7 @@
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
-    <externalSharingModel>Private</externalSharingModel>
+    <externalSharingModel>ReadWrite</externalSharingModel>
     <gender>Feminine</gender>
     <label>trail_user_history</label>
     <nameField>
@@ -162,6 +162,6 @@
     </nameField>
     <pluralLabel>trails_users_historys</pluralLabel>
     <searchLayouts></searchLayouts>
-    <sharingModel>Private</sharingModel>
+    <sharingModel>ReadWrite</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

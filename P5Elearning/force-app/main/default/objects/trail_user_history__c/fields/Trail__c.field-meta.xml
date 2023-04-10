@@ -5,6 +5,7 @@
     <externalId>false</externalId>
     <label>Trail</label>
     <referenceTo>Trail__c</referenceTo>
+    <relationshipLabel>trails_users_historys</relationshipLabel>
     <relationshipName>trails_users_historys</relationshipName>
     <required>false</required>
     <trackHistory>false</trackHistory>

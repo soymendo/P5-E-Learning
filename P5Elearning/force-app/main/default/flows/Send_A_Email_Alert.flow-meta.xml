@@ -40,8 +40,8 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <recordUpdates>
-        <name>Change_Status_to_comlleted</name>
-        <label>Change Status to comlleted</label>
+        <name>Change_Status_to_completed</name>
+        <label>Change Status to completed</label>
         <locationX>176</locationX>
         <locationY>335</locationY>
         <connector>
@@ -75,7 +75,7 @@
         <locationX>50</locationX>
         <locationY>0</locationY>
         <connector>
-            <targetReference>Change_Status_to_comlleted</targetReference>
+            <targetReference>Change_Status_to_completed</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>

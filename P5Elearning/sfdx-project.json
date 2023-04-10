@@ -5,7 +5,7 @@
       "default": true
     }
   ],
-  "name": "P5 E-Learning",
+  "name": "P5Elearning",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "56.0"
