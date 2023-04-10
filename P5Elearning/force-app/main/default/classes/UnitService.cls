@@ -1,6 +1,7 @@
 public with sharing class UnitService {
     public static String saveQuestionAnswers(Id unitId, String questionAnswerJSON) {
         
+     
         // Obtiene el ID del usuario actual
         Id userId = UserInfo.getUserId();
         
@@ -31,7 +32,7 @@ public with sharing class UnitService {
         
 
         // Si no se encontraron preguntas y respuestas existentes para actualizar, se crean registros nuevos a partir del JSON recibido
-        if (questionAnswerList.isEmpty()) {
+        if (questionAnswerList.isEmpty()  || questionAnswerList == null) {
             for (Id question : questionAnswerMap.keySet()) {
                 Question_Answer__c questionAnswer = new Question_Answer__c(Unit_User_History__c = unitUserToInsert.Id, Question__c = question, Answer__c = questionAnswerMap.get(question));
                 questionAnswerList.add(questionAnswer);
@@ -39,12 +40,17 @@ public with sharing class UnitService {
         }
         
         // Si se encontraron preguntas y respuestas para actualizar, se actualizan en la base de datos y se actualiza el registro 
-        if (!questionAnswerList.isEmpty()) {
+        if (!questionAnswerList.isEmpty() && questionAnswerList != null) {
             update questionAnswerList;
             unitUserToInsert.Status_Question_Answer__c = 'Answered';
             update unitUserToInsert;
         }
         
+        // Si se está respondiendo la primera unidad del módulo, se crea un registro nuevo de Unit_User_History__c en estado "In Progress"
+       /* if (unitUserToInsert.Unit__r.Module__c != null && unitUserToInsert.Unit__r.Module__r.id == unitId) {
+            Unit_User_History__c newUnitUserHistory = new Unit_User_History__c(User__c = userId, Unit__c = unitId, Status__c = 'In Progress');
+            insert newUnitUserHistory;
+        } */
 
         // Retorna el estado actualizado del registro Unit_User_History__c
         return unitUserToInsert.Status_Question_Answer__c;
