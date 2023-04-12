@@ -6,9 +6,9 @@ public with sharing class UpdateUnirUserHistoryHelper {
 
     public static void UpdateUnirUserHistory(List<Unit_User_History__c> triggerNew) {
      
-        // Primero, se crea un conjunto vacío de Ids de unidades y se recorre
-         //la lista de objetos Unit_User_History__c pasada como parámetro,
-         // se agregan los Ids de las unidades que han sido contestadas a este conjunto.
+        //Primero, se crea un conjunto vacío de Ids de unidades y se recorre
+        //la lista de objetos Unit_User_History__c pasada como parámetro,
+        //se agregan los Ids de las unidades que han sido contestadas a este conjunto.
 
         Set<Id> UnitIds= new Set<Id>();
      
@@ -19,12 +19,12 @@ public with sharing class UpdateUnirUserHistoryHelper {
 
         // Si el conjunto de Ids de unidades no está vacío,
         // se ejecuta una consulta SOQL que recupera todos los registros
-        //  de Unit_User_History__c que tienen los Ids de unidades encontrados 
-         // anteriormente. Se crea un conjunto de usuarios (User) a partir de
-        //   estos registros de Unit_User_History__c, y se ejecuta una consulta SOQL
-         //   adicional para recuperar los registros de usuarios que coinciden con los 
-         //   usuarios en este conjunto. Los resultados de esta consulta se asignan a un
-         //    mapa de Id de usuario a usuario.
+        // de Unit_User_History__c que tienen los Ids de unidades encontrados 
+        // anteriormente. Se crea un conjunto de usuarios (User) a partir de
+        // estos registros de Unit_User_History__c, y se ejecuta una consulta SOQL
+        // adicional para recuperar los registros de usuarios que coinciden con los 
+        // usuarios en este conjunto. Los resultados de esta consulta se asignan a un
+        // mapa de Id de usuario a usuario.
 
         if(!UnitIds.isEmpty())
         {
@@ -40,28 +40,28 @@ public with sharing class UpdateUnirUserHistoryHelper {
 
             // A continuación, se itera sobre los registros de Unit_User_History__c recuperados
             // en la primera consulta y se calculan el número de intentos (tries) y la puntuación
-            //  (Points__c) de cada uno de ellos en función de los registros relacionados de Preguntas 
-            //  y Respuestas. Si el número de intentos es igual al número de preguntas, se actualiza el 
-            //  estado del registro de Unit_User_History__c a 'Success' y se agrega la puntuación a la
-            //   puntuación del usuario correspondiente. Si el número de intentos es menor al número de preguntas,
-             //   se actualiza el estado del registro de Unit_User_History__c a 'Fail' y se aumenta el número de 
-            //    intentos en uno. Si el número de intentos supera el umbral de 3 intentos, el estado del registro 
-             //   de Unit_User_History__c se actualiza a 'Fail'. Si el número de intentos es menor que el número de
-             //    preguntas y el número de intentos es igual a 2, se reduce a la mitad la puntuación del registro
-             //     de Unit_User_History__c y se actualiza su estado a 'Fail'. Si el número de intentos es igual a 1,
-             //      se realiza la misma operación que para 2 intentos y se aumenta el número de intentos en uno.
+            // (Points__c) de cada uno de ellos en función de los registros relacionados de Preguntas 
+            // y Respuestas. Si el número de intentos es igual al número de preguntas, se actualiza el 
+            // estado del registro de Unit_User_History__c a 'Success' y se agrega la puntuación a la
+            // puntuación del usuario correspondiente. Si el número de intentos es menor al número de preguntas,
+            // se actualiza el estado del registro de Unit_User_History__c a 'Fail' y se aumenta el número de 
+            // intentos en uno. Si el número de intentos supera el umbral de 3 intentos, el estado del registro 
+            // de Unit_User_History__c se actualiza a 'Fail'. Si el número de intentos es menor que el número de
+            // preguntas y el número de intentos es igual a 2, se reduce a la mitad la puntuación del registro
+            // de Unit_User_History__c y se actualiza su estado a 'Fail'. Si el número de intentos es igual a 1,
+            // se realiza la misma operación que para 2 intentos y se aumenta el número de intentos en uno.
 
 
             for(Unit_User_History__c uuh : UnitUserHistoryList){
                 
-                Integer tries = 0;
+                Integer CorrectAnswers = 0;
                 for(Question_Answer__c qa : uuh.Questions_Answers_UUHS__r){
                     if(qa.Answer__r.Is_Correct__c){
-                        tries++;
+                        CorrectAnswers++;
                     }
                    
                 }
-               if(tries == uuh.Questions_Answers_UUHS__r.size()){
+               if(CorrectAnswers == uuh.Questions_Answers_UUHS__r.size()){
                     uuh.Status_Question_Answer__c = 'Success';
                    if(userMap.containsKey(uuh.User__c)){
                         User user = userMap.get(uuh.User__c);
@@ -71,17 +71,16 @@ public with sharing class UpdateUnirUserHistoryHelper {
                 else{
                     Decimal counter = (uuh.Tries__c == null) ? 1 : uuh.Tries__c + 1;
                     uuh.Tries__c = counter;
-                    if (counter >= 3) {
+                    if (counter == 1) {
                         uuh.Status_Question_Answer__c = 'Fail';
+                        uuh.Tries__c+=1;
+                        uuh.Points__c = uuh.Points__c / 2;
                     } else if(counter == 2) {
                         uuh.Status_Question_Answer__c = 'Fail';
                         uuh.Tries__c+=1;
                         uuh.Points__c = uuh.Points__c / 2;
-                        if (counter == 1) {
-                            uuh.Status_Question_Answer__c = 'Fail';
-                            uuh.Tries__c+=1;
-                            uuh.Points__c = uuh.Points__c / 2;
-                        }
+                    } else if (counter >= 3) {
+                        uuh.Status_Question_Answer__c = 'Fail';
                     }
                 }
                 
@@ -90,7 +89,7 @@ public with sharing class UpdateUnirUserHistoryHelper {
 
 
             // Finalmente, se actualizan los registros de Unit_User_History__c
-            //y los registros de usuario correspondientes en la base de datos utilizando 
+            // y los registros de usuario correspondientes en la base de datos utilizando 
             // los métodos de actualización de Apex "update".
             update UnitUserHistoryList;
             update userMap.values();
