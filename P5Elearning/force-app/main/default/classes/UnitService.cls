@@ -84,6 +84,9 @@ public with sharing class UnitService {
             public List<Module_User_History__c> passedModuleIds; 
 
 
+            
+
+
             //Ids de Unidades relacionadas a módulos del Trail actual que el Alumno ya aprobó
             @AuraEnabled
             public List<Id> passedUnitIds; 
@@ -118,8 +121,7 @@ public with sharing class UnitService {
         }
     
 
-
-
+        
 
       /**
        * El método getModules obtiene los módulos relacionados con el Trail y la información de cada módulo,
@@ -140,6 +142,7 @@ public with sharing class UnitService {
             return modules;
         }
         
+       
        
 
 
@@ -174,24 +177,14 @@ public with sharing class UnitService {
          */
 
         public static List<Id> getUnitIdsCompleted(Id trailId){
-            Id userId = UserInfo.getUserId();
-            List<Module__c> modules = getModules(trailId);
-    
+       
+            List<Unit_User_History__c> unitProgress = [SELECT Unit__c FROM Unit_User_History__c WHERE Status__c = 'Completed'  AND User__c = :UserInfo.getUserId() AND Unit__r.Module__c IN : getModules(trailId)];
             Set<Id> unitIds = new Set<Id>();
-            for(Module__c module: modules){
-                for(Unit__c unit: module.Units__r){
-                    unitIds.add(unit.Id);
-                }
+            for(Unit_User_History__c unitProg: unitProgress){
+                unitIds.add(unitProg.Unit__c);
             }
-    
-            List<Unit__c> unitsWithCompletedStatus = [SELECT Id FROM Unit__c WHERE Id IN :unitIds AND Id IN(SELECT Unit__c FROM Unit_User_History__c WHERE Status__c = 'Success' AND User__c = :userId)];
-    
-            List<Id> completedUnitIds = new List<Id>();
-            for(Unit__c unit: unitsWithCompletedStatus){
-                completedUnitIds.add(unit.Id);
-            }
-    
-            return completedUnitIds;
+            return new List<Id>(unitIds);
+
         }
     
        

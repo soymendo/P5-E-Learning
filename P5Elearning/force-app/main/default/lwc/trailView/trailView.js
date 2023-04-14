@@ -2,16 +2,20 @@ import { LightningElement, api, wire, track } from 'lwc';
 import getTrailWrapper from '@salesforce/apex/UnitService.getTrailWrapper';
 
 export default class TrailView extends LightningElement {
+   
+   
     @api recordId;
-    error = undefined;
    
     wrapper;
     thisTrail;
     thisProgressTrail;
-    thisModules;
+    thisModule;
     thisUnits;
 
     
+    passedModuleIds;
+    error = undefined;
+
 
     @wire(getTrailWrapper, {trailId: '$recordId'})
     trail({ data, error }) {
@@ -20,11 +24,34 @@ export default class TrailView extends LightningElement {
             this.wrapper = data;
             this.thisTrail = trail;
             this.thisProgressTrail = progressTrail;
-            this.thisModules = modulesList;
+
+            this.thisModule = modulesList;
+            console.log('Este es el Modulo' );
+            console.log(this.thisModule);
+
             this.thisUnits = passedUnitIds;
+            console.log('Este es el Unit' );
+            console.log(this.thisUnits);
+         
         }else if(error) {
-            this.error = error;
+            console.log('undefined');
         }
     }
+
+    activeSections = ['A', 'C'];
+    activeSectionsMessage = '';
+
+    handleSectionToggle(event) {
+        const openSections = event.detail.openSections;
+
+        if (openSections.length === 0) {
+            this.activeSectionsMessage = 'All sections are closed';
+        } else {
+            this.activeSectionsMessage =
+                'Open sections: ' + openSections.join(', ');
+        }
+    }
+    
+
 
 }

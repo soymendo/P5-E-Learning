@@ -1,0 +1,20 @@
+<template>
+    <lightning-card if:true={unit}>
+        <h1 slot="title">
+            <lightning-icon icon-name="standard:choice" size="small"></lightning-icon>
+             {unit.Name}
+             <template if:true={checkCompletedUnits}>
+                <lightning-icon icon-name="utility:success"  alternative-text="Success!" variant="success"
+                title="success variant small" size="small"></lightning-icon>
+                </template>
+           
+        </h1>
+     <div class="slds-box">
+        <lightning-record-view-form record-id={unit.Id} object-api-name='Unit__c' density='compact'>
+             <lightning-output-field class="outputFont" field-name="Estimated_Time__c"></lightning-output-field>
+             <lightning-output-field class="outputFont" field-name="Points__c"></lightning-output-field>
+             <lightning-button variant="brand" label="Go to Unit" title="Go to Unit" onclick={handleToUnit} class="slds-m-left_x-small"></lightning-button>
+        </lightning-record-view-form>
+     </div>
+    </lightning-card>
+</template>

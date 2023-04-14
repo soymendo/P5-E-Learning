@@ -1,0 +1,32 @@
+<template>
+    <lightning-card if:true={module}>
+        <h1 slot="title">
+            <lightning-icon icon-name="action:new_note" class ="logo" size="small"></lightning-icon>
+           {module.Name}  
+            <template if:true={module.Modules_Users_Historys__r}>
+               
+                <lightning-icon icon-name="utility:success"  alternative-text="Success!" variant="success"
+            title="success variant small" size="small"></lightning-icon>
+            </template>
+        
+        </h1>
+        <div class="slds-box">
+        <lightning-record-view-form record-id={module.Id} object-api-name='Module__c' density='compact'>
+            <lightning-output-field class="outputFont" field-name="Cant_Time__c"></lightning-output-field>
+            <lightning-output-field class="outputFont" field-name="Cant_Points__c"></lightning-output-field>
+            <!--<lightning-button variant="brand" label="Go to Module" title="Go to Module" onclick={handleToModule} class="slds-m-left_x-small"></lightning-button>-->  
+         </lightning-record-view-form>
+        </div>
+    </lightning-card>
+
+   
+     
+     <lightning-card variant="Narrow" title="UNITS" icon-name="standard:choice">  
+            <lightning-accordion-section name="Units" label="Unit">
+                 <template if:true={module.Units__r} for:each={module.Units__r} for:item="unit">
+                      <c-unit-view key={unit.Id} unit={unit} this-units={thisUnits}></c-unit-view> 
+                 </template>
+            </lightning-accordion-section>
+    </lightning-card> 
+
+</template>

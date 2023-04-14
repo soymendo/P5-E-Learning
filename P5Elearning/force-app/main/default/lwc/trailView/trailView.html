@@ -1,12 +1,46 @@
 <template>
-    <lightning-card>
-        <template if:true={wrapper}>
-            <p> {thisTrail.Name}</p>
-            <p> {thisTrail.Points__c}</p>
-            <p> {thisTrail.Description__c}</p>
-            <p> {thisTrail.Time__c} </p>
-            <p> {progressTrail}% </p>
-         
-        </template>
+    
+    
+    <lightning-card title="Trail">
+        <lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle} active-section-name={activeSections}>
+        <lightning-accordion-section name="Trail" label="Trail Detail">
+        <div class="slds-var-p-around_x-small">
+            <div class="slds-box">
+            <template if:true={wrapper}>
+                <lightning-record-view-form record-id={recordId} object-api-name='Trail__c' density='compact'>
+       
+                  <lightning-output-field class="outputFont" field-name="Name"></lightning-output-field>
+          
+                  <lightning-output-field class="outputFont" field-name="Points__c"></lightning-output-field>
+
+                  <lightning-output-field class="outputFont" field-name="Time__c"></lightning-output-field>
+
+                  <lightning-output-field class="outputFont" field-name="Description__c"></lightning-output-field>
+                  
+                  </lightning-record-view-form>
+             </template>
+            </div>
+          </div>
+          </lightning-accordion-section>
+    
+
+         <div class="StatusTrail">
+          <p>
+            Current state of the trail {thisProgressTrail}%
+          </p>
+        </div>
+        <lightning-progress-bar label="Progress Trail" value={thisProgressTrail} size="medium"></lightning-progress-bar>
+    
+        <lightning-accordion-section name="Modules" label ="Modules">
+            
+            <div class="slds-box">
+                <template if:true={thisModule}>
+                 <template for:each={thisModule} for:item="module">
+                        <c-module-view key={module.Id} module={module} passed-module-ids={passedModuleIds} this-units={thisUnits}></c-module-view> 
+                  </template>
+               </template>
+             </div>
+        </lightning-accordion-section>
+    </lightning-accordion>
     </lightning-card>
 </template>

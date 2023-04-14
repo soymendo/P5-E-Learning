@@ -1,0 +1,29 @@
+<template>
+    <lightning-card>
+       <p>
+       </p>
+       <p>
+      </p>
+        
+        <div class="Content">{question.Content__c}</div>
+      
+        <template if:true={question.Answers__r}>
+            <div class="slds-box">
+            <template for:each={question.Answers__r} for:item="answer">
+                <div key={answer.Id}>
+                    <c-answer-content answer={answer}></c-answer-content>
+                    <lightning-radio-group
+                        name={question.Id}
+                        options={options}
+                        value={selectedAnswer}
+                        type="radio"
+                        onchange={handleAnswerSelected}
+                        variant="label-hidden"
+                        >
+                    </lightning-radio-group>
+                </div>
+            </template>
+            </div>
+        </template>
+    </lightning-card>
+</template>

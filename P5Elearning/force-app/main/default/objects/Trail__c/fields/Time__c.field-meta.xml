@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Time__c</fullName>
     <externalId>false</externalId>
-    <label>Time</label>
+    <label>Time (Minutes)</label>
     <summarizedField>Trail_Module__c.Time__c</summarizedField>
     <summaryForeignKey>Trail_Module__c.Trail__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>

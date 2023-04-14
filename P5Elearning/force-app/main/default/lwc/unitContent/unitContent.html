@@ -1,0 +1,15 @@
+<template>
+    
+    <lightning-card if:true={thisUnit}>
+        <h6 class="NombreUnidad">{thisUnit.Name}</h6>
+        <div class="slds-box slds-box_large">
+        <div class="alinearDescripcion">{thisUnit.Content__c}</div>
+        </div>
+         <template if:true={thisQuestions}>
+            <template for:each={thisQuestions} for:item="question">
+             <c-question-content key={question.Id} question={question} question-list={thisQuestions} ></c-question-content> 
+            </template>
+        </template>
+      <lightning-button class="slds-align_absolute-center" variant="brand" label="Submit"></lightning-button>
+    </lightning-card>
+</template>

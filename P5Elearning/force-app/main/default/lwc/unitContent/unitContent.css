@@ -1,0 +1,9 @@
+.NombreUnidad{
+    text-align: center;
+    font-weight: bold;
+    font-size: 15px;
+}
+.alinearDescripcion{
+    text-align: justify;
+    padding: 10px;
+}

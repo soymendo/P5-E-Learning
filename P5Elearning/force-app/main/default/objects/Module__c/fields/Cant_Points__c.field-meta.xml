@@ -2,7 +2,7 @@
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
     <fullName>Cant_Points__c</fullName>
     <externalId>false</externalId>
-    <label>Cant Points</label>
+    <label>Points</label>
     <summarizedField>Unit__c.Points__c</summarizedField>
     <summaryForeignKey>Unit__c.Module__c</summaryForeignKey>
     <summaryOperation>sum</summaryOperation>
